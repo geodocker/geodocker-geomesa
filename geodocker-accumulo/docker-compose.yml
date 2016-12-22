@@ -1,0 +1,55 @@
+version: '2'
+services:
+    hdfs-name:
+        image: quay.io/geomesa/hdfs:latest
+        command: name
+        environment:
+          HADOOP_MASTER_ADDRESS: hdfs-name
+        ports:
+          - 50070:50070
+        # volumes:
+        #   - '/data/gt/hdfs:/data/hdfs'
+    hdfs-data:
+        image: quay.io/geomesa/hdfs:latest
+        command: data
+        environment:
+          HADOOP_MASTER_ADDRESS: hdfs-name
+        depends_on:
+          - hdfs-name
+        # volumes:
+        #  - '/data/gt/hdfs:/data/hdfs'
+    zookeeper:
+        image: quay.io/geodocker/zookeeper:latest
+        ports:
+          - 2181:2181
+        #  volumes:
+        #   - '/data/gt/hdfs:/data/hdfs'
+    accumulo-master:
+      image: quay.io/geomesa/accumulo:latest
+      command: master --auto-init
+      environment:
+        HADOOP_MASTER_ADDRESS: hdfs-name
+        ZOOKEEPERS: zookeeper
+        ACCUMULO_PASSWORD: GisPwd
+      depends_on:
+        - zookeeper
+    accumulo-monitor:
+        image: quay.io/geomesa/accumulo:latest
+        command: monitor
+        environment:
+          HADOOP_MASTER_ADDRESS: hdfs-name
+          ZOOKEEPERS: zookeeper
+        ports:
+          - 9995:9995
+        depends_on:
+          - zookeeper
+          - accumulo-master
+    accumulo-tserver:
+        image: quay.io/geomesa/accumulo:latest
+        command: tserver
+        environment:
+          HADOOP_MASTER_ADDRESS: hdfs-name
+          ZOOKEEPERS: zookeeper
+        depends_on:
+          - zookeeper
+          - accumulo-master
