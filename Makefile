@@ -21,7 +21,7 @@ geomesa-jupyter:
 clean:
 	cd geodocker-base && make clean
 	cd geodocker-hdfs && make clean
-	cd geodocker-accumulo && make clean
-	cd geodocker-accumulo-geomesa && make clean
+	cd geodocker-accumulo && make cleanest
+	cd geodocker-accumulo-geomesa && make cleanest
 	cd geodocker-geoserver && make clean
 	cd geodocker-geomesa-jupyter && make clean
