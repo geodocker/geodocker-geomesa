@@ -4,19 +4,14 @@ REPO := $(word 2, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
 
 build:
-	docker build -t ${IMG}:latest	.
+	docker build \
+                --build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
+                --build-arg TAG=${TAG} \
+                --build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
+                -t ${IMG}:${TAG}	.
 
 publish: build
-	docker push ${IMG}:latest
+	docker push ${IMG}:${TAG}
 	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
-
-test: build
-	docker-compose up -d
-	docker-compose run --rm hdfs-name bash -c "set -e \
-		&& source /sbin/hdfs-lib.sh \
-		&& wait_until_hdfs_is_available \
-		&& hdfs dfs -touchz /live-check \
-		&& hdfs dfs -ls /live-check"
-	docker-compose down
 
 clean:

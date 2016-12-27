@@ -4,11 +4,15 @@ REPO := $(word 2, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
 
 build:
-	docker build -t ${IMG}:latest	.
+	docker build \
+                --build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
+                --build-arg TAG=${TAG} \
+                --build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
+                -t ${IMG}:${TAG}	.
 
 publish: build
-	docker push ${IMG}:latest
+	docker push ${IMG}:${TAG}
 	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
 
 test: build
-	docker run -it --rm ${IMG}:latest bash -c "zkServer.sh start; zkCli.sh stat /zookeeper"
+	docker run -it --rm ${IMG}:${TAG} bash -c "zkServer.sh start; zkCli.sh stat /zookeeper"

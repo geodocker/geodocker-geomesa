@@ -2,6 +2,11 @@ FROM quay.io/geomesa/base:latest
 
 MAINTAINER Pomadchin Grigory, daunnc@gmail.com
 
+ARG TAG
+ARG GEOMESA_VERSION
+ARG ACCUMULO_VERSION
+ARG THRIFT_VERSION
+
 ENV HADOOP_VERSION 2.7.1
 ENV HADOOP_HOME /usr/lib/hadoop
 ENV HADOOP_CONF_DIR /etc/hadoop/conf

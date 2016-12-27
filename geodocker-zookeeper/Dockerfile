@@ -2,6 +2,11 @@ FROM quay.io/geomesa/base:latest
 
 MAINTAINER Pomadchin Grigory, daunnc@gmail.com
 
+ARG TAG
+ARG GEOMESA_VERSION
+ARG ACCUMULO_VERSION
+ARG THRIFT_VERSION
+
 ENV ZOOKEEPER_VERSION 3.4.8
 ENV ZOOKEEPER_HOME /opt/zookeeper
 ENV ZOOKEEPER_DATA /data/zookeeper

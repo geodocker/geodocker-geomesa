@@ -4,6 +4,11 @@ MAINTAINER Nathan Zimmerman, npzimmerman@gmail.com
 
 RUN yum install -y wget curl unzip which nc bzip2
 
+ARG TAG
+ARG GEOMESA_VERSION
+ARG ACCUMULO_VERSION
+ARG THRIFT_VERSION
+
 # JAVA
 ENV JAVA_HOME /usr/java/jdk1.8.0_45
 ENV PATH $PATH:$JAVA_HOME/bin

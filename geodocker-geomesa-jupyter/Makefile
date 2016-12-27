@@ -4,10 +4,11 @@ REPO := $(word 2, ${BASE})-$(word 3, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
 
 build: vegas
-	echo ${BASE} \
-        && echo ${REPO} \
-	&& echo ${IMG} \
-	&& docker build -t ${IMG}:latest .
+	docker build \
+                --build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
+                --build-arg TAG=${TAG} \
+                --build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
+                -t ${IMG}:${TAG} .
 
 
 ivy-2.3.0.jar: 
@@ -17,7 +18,7 @@ vegas: ivy-2.3.0.jar
 	java -jar ivy-2.3.0.jar -dependency org.vegas-viz vegas-spark_2.11 0.3.6 -retrieve "lib/[artifact]-[revision](-[classifier]).[ext]"
 
 publish: build
-	docker push ${IMG}:latest
+	docker push ${IMG}:${TAG}
 	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
 
 clean:

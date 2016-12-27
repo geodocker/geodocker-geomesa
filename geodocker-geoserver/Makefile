@@ -2,12 +2,16 @@ BASE := $(subst -, ,$(notdir ${CURDIR}))
 ORG  := geomesa
 REPO := $(word 2, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
-GEOMESA_VERSION := 1.3.0-m3-SNAPSHOT
 GEOMESA_DIST_TARBALL := geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz
 GEOMESA_ACCUMULO_GS_INSTALL := geomesa-accumulo-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
 
 build: ${GEOMESA_ACCUMULO_GS_INSTALL}
-	docker build -t ${IMG}:latest	.
+	docker build \
+                --build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
+                --build-arg TAG=${TAG} \
+                --build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
+                --build-arg THRIFT_VERSION=${THRIFT_VERSION} \
+                -t ${IMG}:${TAG}	.
 
 .cache/${GEOMESA_DIST_TARBALL}:
 	mkdir -p .cache \
@@ -20,11 +24,8 @@ ${GEOMESA_ACCUMULO_GS_INSTALL}: .cache/${GEOMESA_DIST_TARBALL}
 	@touch -am ${GEOMESA_ACCUMULO_GS_INSTALL}
 
 publish: build
-	docker push ${IMG}:latest
+	docker push ${IMG}:${TAG}
 	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
-
-test: build
-	echo "TODO: make test for the container"
 
 clean:
 	rm -rf .cache
