@@ -24,10 +24,7 @@ publish: build
 	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
 
 clean:
-	rm -rf geomesa-accumulo_2.11-${GEOMESA_VERSION}/
+	rm -rf geomesa-accumulo_2.11-*
 
-cleaner: clean
-	rm -f ${RUNTIME}
-
-cleanest: cleaner
-	rm -f ${DIST_TARBALL}
+cleanest: clean
+	rm -f geomesa-accumulo-dist*
