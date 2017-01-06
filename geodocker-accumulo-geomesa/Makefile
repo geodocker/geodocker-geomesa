@@ -5,12 +5,18 @@ IMG  := quay.io/${ORG}/${REPO}
 DIST_TARBALL := tarballs/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz
 RUNTIME := geomesa-accumulo-distributed-runtime_2.11-${GEOMESA_VERSION}.jar
 
-build: ${RUNTIME}
+build: ${RUNTIME} dockerfile
 	docker build \
                 --build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
                 --build-arg TAG=${TAG} \
                 --build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
+		-f target/Dockerfile \
                 -t ${IMG}:${TAG} .
+
+dockerfile:
+	mkdir -p target
+	sed 's/__TAG__/'"${TAG}"'/' Dockerfile.template > target/Dockerfile
+
 
 ${DIST_TARBALL}:
 	(cd tarballs ;  cp ${HOME}/.m2/repository/org/locationtech/geomesa/geomesa-accumulo-dist_2.11/${GEOMESA_VERSION}/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz . )
@@ -21,7 +27,6 @@ ${RUNTIME}: ${DIST_TARBALL}
 
 publish: build
 	docker push ${IMG}:${TAG}
-	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
 
 clean:
 	rm -rf geomesa-accumulo_2.11-*

@@ -5,13 +5,19 @@ IMG  := quay.io/${ORG}/${REPO}
 GEOMESA_DIST_TARBALL := geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz
 GEOMESA_ACCUMULO_GS_INSTALL := geomesa-accumulo-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
 
-build: ${GEOMESA_ACCUMULO_GS_INSTALL}
+build: ${GEOMESA_ACCUMULO_GS_INSTALL} dockerfile
 	docker build \
                 --build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
                 --build-arg TAG=${TAG} \
                 --build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
                 --build-arg THRIFT_VERSION=${THRIFT_VERSION} \
+		-f target/Dockerfile \
                 -t ${IMG}:${TAG}	.
+
+dockerfile:
+	mkdir -p target
+	sed 's/__TAG__/'"${TAG}"'/' Dockerfile.template > target/Dockerfile
+
 
 .cache/${GEOMESA_DIST_TARBALL}:
 	mkdir -p .cache \
@@ -25,7 +31,6 @@ ${GEOMESA_ACCUMULO_GS_INSTALL}: .cache/${GEOMESA_DIST_TARBALL}
 
 publish: build
 	docker push ${IMG}:${TAG}
-	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
 
 clean:
 	rm -rf .cache

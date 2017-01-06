@@ -3,12 +3,17 @@ ORG  := geomesa
 REPO := $(word 2, ${BASE})-$(word 3, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
 
-build: vegas
+build: vegas dockerfile
 	docker build \
                 --build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
                 --build-arg TAG=${TAG} \
                 --build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
+		-f target/Dockerfile \
                 -t ${IMG}:${TAG} .
+
+dockerfile:
+	mkdir -p target
+	sed 's/__TAG__/'"${TAG}"'/' Dockerfile.template > target/Dockerfile
 
 
 ivy-2.3.0.jar: 
@@ -19,7 +24,6 @@ vegas: ivy-2.3.0.jar
 
 publish: build
 	docker push ${IMG}:${TAG}
-	if [ "${TAG}" != "" -a "${TAG}" != "latest" ]; then docker tag ${IMG}:latest ${IMG}:${TAG} && docker push ${IMG}:${TAG}; fi
 
 clean:
 	rm -rf ivy-2.3.0.jar
