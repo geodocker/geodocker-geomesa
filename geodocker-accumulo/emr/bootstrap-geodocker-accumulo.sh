@@ -3,7 +3,7 @@
 # Bootstrap docker and accumulo on EMR cluster
 #
 
-IMAGE=quay.io/geomesa/accumulo:${TAG:-"latest"}
+REPO=quay.io/geomesa
 ACCUMULO_SECRET=DEFAULT
 ACCUMULO_PASSWORD=secret
 INSTANCE_NAME=accumulo
@@ -16,8 +16,8 @@ do
             CONTINUE=true
             shift
             ;;
-        -i=*|--image=*)
-            IMAGE="${i#*=}"
+        -t=*|--tag=*)
+            TAG="${i#*=}"
             shift
             ;;
         -s=*|--accumulo-secret=*)
@@ -74,14 +74,16 @@ ${ENV_VARS[@]} \
 -v /etc/hadoop/conf:/etc/hadoop/conf \
 -v /usr/lib/hadoop-hdfs/bin:/usr/lib/hadoop-hdfs/bin"
 
+IMAGE=${REPO}/accumulo-geomesa:${TAG}
+
 DOCKER_OPT="-d --net=host --restart=always --memory-swappiness=0"
 if is_master ; then
     docker run $DOCKER_OPT --name=accumulo-master $DOCKER_ENV $IMAGE master --auto-init
     docker run $DOCKER_OPT --name=accumulo-monitor $DOCKER_ENV $IMAGE monitor
     docker run $DOCKER_OPT --name=accumulo-tracer $DOCKER_ENV $IMAGE tracer
     docker run $DOCKER_OPT --name=accumulo-gc $DOCKER_ENV $IMAGE gc
-    docker run $DOCKER_OPT --name=geoserver quay.io/geomesa/geoserver:latest
-    docker run $DOCKER_OPT --name=jupyter $DOCKER_ENV quay.io/geomesa/geomesa-jupyter:latest
+    docker run $DOCKER_OPT --name=geoserver quay.io/geomesa/geoserver:$TAG
+    docker run $DOCKER_OPT --name=jupyter $DOCKER_ENV quay.io/geomesa/geomesa-jupyter:$TAG
 else # is worker
     docker run -d --net=host --name=accumulo-tserver $DOCKER_ENV $IMAGE tserver
 fi

@@ -39,6 +39,7 @@ services:
           ZOOKEEPERS: zookeeper
         ports:
           - 9995:9995
+          - 50095:50095
         depends_on:
           - zookeeper
           - accumulo-master

@@ -1,8 +1,12 @@
-FROM quay.io/geomesa/hdfs:latest
+FROM quay.io/geomesa/hdfs:__TAG__
 
 MAINTAINER Pomadchin Grigory <daunnc@gmail.com>
 
+ARG TAG
+ARG GEOMESA_VERSION
 ARG ACCUMULO_VERSION
+ARG THRIFT_VERSION
+
 ENV ACCUMULO_VERSION ${ACCUMULO_VERSION}
 ENV ACCUMULO_HOME /opt/accumulo
 ENV ACCUMULO_CONF_DIR $ACCUMULO_HOME/conf
