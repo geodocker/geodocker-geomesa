@@ -21,3 +21,17 @@ Change all pom xml files
 
 build the quickstart via
 mvn clean install -pl geomesa-quickstart-accumulo
+
+copy jar into java container which is connected to geomesa
+docker cp geomesa-quickstart-accumulo/target/geomesa-quickstart-accumulo-1.3.0.jar java8JDK:/geomesaQuickstart.jar
+docker exec -ti bash java8JDK bash
+java -cp geomesaQuickstart.jar \
+  com.example.geomesa.accumulo.AccumuloQuickStart \
+  -instanceId accumulo \
+  -zookeepers zookeeper \
+  -user accumulo \
+  -password secret \
+  -tableName quickstart
+
+  **todo**
+  what is the user /password of the default dockerized geDocker version?

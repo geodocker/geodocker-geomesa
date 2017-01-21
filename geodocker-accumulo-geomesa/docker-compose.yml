@@ -1,5 +1,10 @@
 version: '2'
 services:
+    tutorial:
+      image: java:8-jdk
+      links:
+        - zookeeper:zookeeper
+        - accumulo-master:accumulo
     geoserver:
         image: quay.io/geomesa/geoserver:latest
         ports:
