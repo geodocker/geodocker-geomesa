@@ -39,7 +39,7 @@ java -cp geomesa-quickstart-accumulo/target/geomesa-quickstart-accumulo-1.3.0.ja
   com.example.geomesa.accumulo.AccumuloQuickStart \
   -instanceId accumulo \
   -zookeepers zookeeper \
-  -user accumulo \
-  -password secret \
+  -user root \
+  -password GisPwd \
   -tableName quickstart
 ```
