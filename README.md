@@ -49,10 +49,14 @@ java -cp geomesa-quickstart-accumulo/target/geomesa-quickstart-accumulo-1.3.0.ja
   -password GisPwd \
   -tableName quickstart
 ```
+- you can monitor accumulo here http://localhost:9995/accumulo
 
 # TODO
 
  - currently it is crashing
+ - checkout geomesas gitter, there are some really interesting notes
+ - apparently the iterators ore (not yet out of the box) available in the geodocker implementation
+ - you need to add the jar into `ACCUMULO_HOME/lib` to *globally* install it. Otherwise namespaces are possible as well
 ```
 The version of ZooKeeper being used doesn't support Container nodes. CreateMode.PERSISTENT will be used instead.
 Configured server-side iterators do not match client version - client version: 1.3.0, server version: unavailable
