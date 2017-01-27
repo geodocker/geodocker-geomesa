@@ -19,24 +19,23 @@ docker-compose up
 ## geomesa tutorial quickstart
 
 ```
-git clone the tutorials
+git clone https://github.com/geoHeil/geomesa-tutorials
 ```
+- follow the readme there to build the container
+
 make sure versions are matching (you can get git clone https://github.com/geoHeil/geomesa-tutorials.git)
 Change all pom xml files
 
-build the quickstart via
+connect into the java container which is already running
 ```
-mvn clean install -pl geomesa-quickstart-accumulo
-```
-copy jar into java container which is connected to geomesa and connect into the java container
-```
-docker cp geomesa-quickstart-accumulo/target/geomesa-quickstart-accumulo-1.3.0.jar java8JDK:/geomesaQuickstart.jar
-docker exec -ti bash java8JDK bash
+docker ps # shows all the containers
+e5b2bb33c0b0        geomesa-tutorial:1.3.0 # I see this one
+docker exec -ti <id> bash # id is here e5b2bb33c0b0
 ```
 
-run the quickstart. This requires connection credentials
+Now run the quickstart. This requires connection credentials as defined in the `docker-compose.yml` file:
 ```
-java -cp geomesaQuickstart.jar \
+java -cp geomesa-quickstart-accumulo/target/geomesa-quickstart-accumulo-1.3.0.jar \
   com.example.geomesa.accumulo.AccumuloQuickStart \
   -instanceId accumulo \
   -zookeepers zookeeper \
@@ -44,5 +43,3 @@ java -cp geomesaQuickstart.jar \
   -password secret \
   -tableName quickstart
 ```
-  **todo**
-  what is the user /password of the default dockerized geDocker version?
