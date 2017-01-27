@@ -22,4 +22,4 @@ RUN set -x \
   && (echo yes | ${GEOMESA_DIST}/bin/install-jline.sh)
 
 COPY ./fs /
-ENTRYPOINT [ "/sbin/geomesa-entrypoint.sh" ]
+ENTRYPOINT [ "/sbin/entrypoint.sh" ]
