@@ -15,9 +15,11 @@ ENV PATH="${PATH}:${GEOMESA_HOME}/bin"
 ADD geomesa-accumulo_2.11-${GEOMESA_VERSION} ${GEOMESA_HOME}
 ADD geomesa-accumulo-distributed-runtime_2.11-${GEOMESA_VERSION}.jar ${GEOMESA_RUNTIME}/
 
+ADD geomesa-accumulo-distributed-runtime_2.11-${GEOMESA_VERSION}.jar ${ACCUMULO_HOME}/lib/
+
 RUN set -x \
   && (echo yes | ${GEOMESA_DIST}/bin/install-jai.sh) \
   && (echo yes | ${GEOMESA_DIST}/bin/install-jline.sh)
 
 COPY ./fs /
-ENTRYPOINT [ "/sbin/geomesa-entrypoint.sh" ]
+ENTRYPOINT [ "/sbin/entrypoint.sh" ]
