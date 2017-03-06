@@ -106,7 +106,7 @@ COPY lib/* /usr/local/spark/jars/
 USER $NB_USER
 
 ENV GEOMESA_SPARK_HOME file:///opt/geomesa/dist/spark
-ENV GEOMESA_SPARK_JARS ${GEOMESA_SPARK_HOME}/geomesa-accumulo-spark_2.11-${GEOMESA_VERSION}-shaded.jar,${GEOMESA_SPARK_HOME}/geomesa-spark-converter_2.11-${GEOMESA_VERSION}.jar,${GEOMESA_SPARK_HOME}/geomesa-spark-geotools_2.11-${GEOMESA_VERSION}.jar
+ENV GEOMESA_SPARK_JARS ${GEOMESA_SPARK_HOME}/geomesa-accumulo-spark_2.11-${GEOMESA_VERSION}.jar,${GEOMESA_SPARK_HOME}/geomesa-spark-converter_2.11-${GEOMESA_VERSION}.jar,${GEOMESA_SPARK_HOME}/geomesa-spark-geotools_2.11-${GEOMESA_VERSION}.jar
 
 # install GeoMesa kernel
 RUN jupyter toree install       \
