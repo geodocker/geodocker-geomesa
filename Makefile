@@ -1,4 +1,13 @@
-build: base hdfs accumulo geomesa geoserver geomesa-jupyter
+#build: base hdfs accumulo geomesa geoserver geomesa-jupyter
+build: 
+	cd geodocker-base && make 
+	cd geodocker-hdfs && make 
+	cd geodocker-accumulo && make 
+	cd geodocker-accumulo-geomesa && make 
+	cd geodocker-geoserver && make 
+	cd geodocker-geomesa-jupyter && make 
+
+publish: base hdfs accumulo geomesa geoserver geomesa-jupyter
 
 base:
 	cd geodocker-base && make publish
