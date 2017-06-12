@@ -67,7 +67,7 @@ RUN set -x \
 # Install GeoMesa Process Jar
 RUN set -x \
     && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-    && cp /opt/geomesa/dist/gs-plugins/geomesa-process_2.11-${GEOMESA_VERSION}.jar .
+    && cp /opt/geomesa/dist/gs-plugins/geomesa-process-wps_2.11-${GEOMESA_VERSION}.jar .
 
 # Install Hadoop and Accumulo specific jars
 RUN set -x \
