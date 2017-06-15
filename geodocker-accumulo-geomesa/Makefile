@@ -19,7 +19,7 @@ dockerfile:
 
 
 ${DIST_TARBALL}:
-	(cd tarballs ;  cp ${HOME}/.m2/repository/org/locationtech/geomesa/geomesa-accumulo-dist_2.11/${GEOMESA_VERSION}/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz . )
+	(mkdir -p tarballs; cd tarballs ;  cp ${HOME}/.m2/repository/org/locationtech/geomesa/geomesa-accumulo-dist_2.11/${GEOMESA_VERSION}/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz . )
 
 ${RUNTIME}: ${DIST_TARBALL}
 	tar zxvf $<
@@ -30,6 +30,8 @@ publish: build
 
 clean:
 	rm -rf geomesa-accumulo_2.11-*
+	rm -rf tarballs
 
 cleanest: clean
 	rm -f geomesa-accumulo-dist*
+	rm -rf tarballs
