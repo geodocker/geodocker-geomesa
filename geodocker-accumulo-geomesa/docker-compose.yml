@@ -1,7 +1,7 @@
 version: '2'
 services:
     geoserver:
-        image: quay.io/geomesa/geoserver:latest
+        image: quay.io/geomesa/geoserver:geomesa-1.3.2-SNAPSHOT-accumulo-1.7.3
         ports:
           - 9090:9090
     hdfs-name:
