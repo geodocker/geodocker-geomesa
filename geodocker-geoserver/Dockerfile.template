@@ -72,6 +72,8 @@ RUN set -x \
 # Install Hadoop and Accumulo specific jars
 RUN set -x \
     && /opt/geomesa/bin/install-hadoop-accumulo.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib -a ${ACCUMULO_VERSION} -h ${HADOOP_VERSION} -t ${THRIFT_VERSION}
+RUN set -x \
+    && rm /opt/tomcat/webapps/geoserver/WEB-INF/lib/guava-11.*.jar
 
 RUN set -x \
   && chown root /opt/tomcat/webapps/geoserver/WEB-INF/lib/* \
