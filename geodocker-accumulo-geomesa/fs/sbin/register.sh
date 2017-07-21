@@ -13,3 +13,4 @@ accumulo shell -u ${ACCUMULO_USER} -p ${ACCUMULO_PASSWORD} -e \
 accumulo shell -u ${ACCUMULO_USER} -p ${ACCUMULO_PASSWORD} -e \
   "config -ns geomesa -s table.classpath.context=geomesa"
 echo "Accumulo namespace configured: geomesa"
+
