@@ -22,6 +22,7 @@ template $HADOOP_CONF_DIR/core-site.xml
 DEFAULT_FS=$(xmllint --xpath "//property[name='fs.defaultFS']/value/text()"  $HADOOP_CONF_DIR/core-site.xml)
 INSTANCE_VOLUME=${INSTANCE_VOLUME:-$DEFAULT_FS/$INSTANCE_NAME}
 template $ACCUMULO_CONF_DIR/accumulo-site.xml
+template $ACCUMULO_CONF_DIR/client.conf
 
 # The first argument determines this container's role in the accumulo cluster
 ROLE=${1:-}
