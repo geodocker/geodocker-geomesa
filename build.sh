@@ -3,7 +3,7 @@
 usage() { echo "Usage: $0 [-t <tag>] [-g <geomesa.version>] [-a <accumulo.version>]" 1>&2; exit 1; }
 
 ACCUMULO_VERSION=1.7.3
-GEOMESA_VERSION=1.3.4
+GEOMESA_VERSION=2.0.0-m.1
 
 while getopts ":t:g:a:" o; do
     case "${o}" in
