@@ -26,14 +26,13 @@ $ docker exec -ti geodockeraccumulogeomesa_accumulo-master_1 /usr/bin/bash
 To ingest some sample data, use the GeoMesa command line tools:
 
 ```
-$ cd /opt/geomesa/bin
-$ ./geomesa-accumulo ingest -C example-csv -c example -u root -p GisPwd -s example-csv ../examples/ingest/csv/example.csv
+$ geomesa ingest -C example-csv -c example -u root -p GisPwd -s example-csv /opt/geomesa/examples/ingest/csv/example.csv
 ```
 
 To export data:
 
 ```
-$ ./geomesa-accumulo export -c example -u root -p GisPwd -f example-csv
+$ geomesa export -c example -u root -p GisPwd -f example-csv
 ```
 
 To view data in GeoServer, go to `http://localhost:9090/geoserver/web`, login with `admin:geoserver`, click
@@ -43,6 +42,7 @@ To view data in GeoServer, go to `http://localhost:9090/geoserver/web`, login wi
 * accumulo.zookeepers = zookeeper
 * accumulo.user = root
 * accumulo.password = GisPwd
-* accumulo.catalog = example (from the ingest command above)
+* accumulo.catalog = example ('tableName' from the ingest command above)
+* accumulo.source = example-csv ('Data Source Name' from the ingest command above)
 
 Click 'save'. You should see the 'example-csv' layer available to publish.
