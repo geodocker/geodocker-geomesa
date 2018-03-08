@@ -15,6 +15,13 @@ installed in the Accumulo master instance under `/opt/geomesa/`.
 
 Accumulo is available on the standard ports, and GeoServer is available on port `9090`.
 
+# Image Versions
+
+The images used are specified in `docker-compose.yml`.
+
+By default, images from [quay.io](https://quay.io/organization/geomesa) are used, but you may modify
+the file to point to local images or another repository.
+
 # Quick Start
 
 To connect to the Accumulo master instance, run:
