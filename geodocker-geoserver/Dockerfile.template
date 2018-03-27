@@ -4,12 +4,14 @@ ARG TAG
 ARG GEOMESA_VERSION
 ARG ACCUMULO_VERSION
 ARG THRIFT_VERSION
+ARG KAFKA_VERSION
 
 ENV ACCUMULO_VERSION ${ACCUMULO_VERSION}
 ENV THRIFT_VERSION ${THRIFT_VERSION}
 ENV HADOOP_VERSION 2.7.3
 ENV GEOSERVER_VERSION 2.9.4
 ENV GEOMESA_VERSION ${GEOMESA_VERSION}
+ENV KAFKA_VERSION ${KAFKA_VERSION}
 ENV TOMCAT_VERSION 8.0.35
 ENV CATALINA_OPTS "-Xmx8g -XX:MaxPermSize=512M -Duser.timezone=UTC -server -Djava.awt.headless=true"
 
@@ -43,7 +45,6 @@ RUN set -x \
   && tar zxvf /tmp/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz \
   && ln -s geomesa-accumulo_2.11-${GEOMESA_VERSION} geomesa
   
-
 # Install GeoMesa Accumulo DataStore
 RUN set -x \
     && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
@@ -74,6 +75,21 @@ RUN set -x \
     && /opt/geomesa/bin/install-hadoop-accumulo.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib -a ${ACCUMULO_VERSION} -h ${HADOOP_VERSION} -t ${THRIFT_VERSION}
 RUN set -x \
     && rm /opt/tomcat/webapps/geoserver/WEB-INF/lib/guava-11.*.jar
+
+# Install Geomesa Kafka Distribution
+COPY .cache/geomesa-kafka-${KAFKA_VERSION}-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz /tmp
+
+RUN set -x \
+  && cd /opt \
+  && tar zxvf /tmp/geomesa-kafka-${KAFKA_VERSION}-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz \
+  && ln -s geomesa-kafka-${KAFKA_VERSION}_2.11-${GEOMESA_VERSION} geomesa-kafka
+
+# Install GeoMesa Kafka DataStore
+RUN set -x \
+  && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
+  && tar zxvf /opt/geomesa-kafka/dist/gs-plugins/geomesa-kafka-${KAFKA_VERSION}-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz \
+  && rm /opt/tomcat/webapps/geoserver/WEB-INF/lib/zookeeper*.jar \
+  && /opt/geomesa-kafka/bin/install-kafka.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib
 
 RUN set -x \
   && chown root /opt/tomcat/webapps/geoserver/WEB-INF/lib/* \
