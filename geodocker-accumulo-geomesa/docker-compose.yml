@@ -1,18 +1,18 @@
 version: '2'
 services:
     geoserver:
-        image: quay.io/geomesa/geoserver:geomesa-2.0.0-m.1-accumulo-1.7.3
+        image: quay.io/geomesa/geoserver:geomesa-2.0.0-accumulo-1.7.3
         ports:
           - 9090:9090
     hdfs-name:
-        image: quay.io/geomesa/hdfs:geomesa-2.0.0-m.1-accumulo-1.7.3
+        image: quay.io/geomesa/hdfs:geomesa-2.0.0-accumulo-1.7.3
         command: name
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
         ports:
           - 50070:50070
     hdfs-data:
-        image: quay.io/geomesa/hdfs:geomesa-2.0.0-m.1-accumulo-1.7.3
+        image: quay.io/geomesa/hdfs:geomesa-2.0.0-accumulo-1.7.3
         command: data
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
@@ -23,7 +23,7 @@ services:
         ports:
           - 2181:2181
     accumulo-master:
-      image: quay.io/geomesa/accumulo-geomesa:geomesa-2.0.0-m.1-accumulo-1.7.3
+      image: quay.io/geomesa/accumulo-geomesa:geomesa-2.0.0-accumulo-1.7.3
       command: master --auto-init
       environment:
         HADOOP_MASTER_ADDRESS: hdfs-name
@@ -32,7 +32,7 @@ services:
       depends_on:
         - zookeeper
     accumulo-monitor:
-        image: quay.io/geomesa/accumulo-geomesa:geomesa-2.0.0-m.1-accumulo-1.7.3
+        image: quay.io/geomesa/accumulo-geomesa:geomesa-2.0.0-accumulo-1.7.3
         command: monitor
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
@@ -44,7 +44,7 @@ services:
           - zookeeper
           - accumulo-master
     accumulo-tserver:
-        image: quay.io/geomesa/accumulo-geomesa:geomesa-2.0.0-m.1-accumulo-1.7.3
+        image: quay.io/geomesa/accumulo-geomesa:geomesa-2.0.0-accumulo-1.7.3
         command: tserver
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
