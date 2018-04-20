@@ -23,7 +23,7 @@ RUN set -x \
 
 RUN set -x \
   && curl -sS -L -o /tmp/geoserver-war.zip \
-    http://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}/geoserver-${GEOSERVER_VERSION}-war.zip \
+    https://downloads.sourceforge.net/project/geoserver/GeoServer/${GEOSERVER_VERSION}/geoserver-${GEOSERVER_VERSION}-war.zip \
   && unzip /tmp/geoserver-war.zip geoserver.war -d /tmp \
   && unzip /tmp/geoserver.war -d /opt/tomcat/webapps/geoserver \
   && rm -rf /tmp/geoserver-war.zip /tmp/geoserver.war /opt/tomcat/webapps/geoserver/META-INF
@@ -31,7 +31,7 @@ RUN set -x \
 # Install geoserver WPS plugin
 RUN set -x \
   && curl -sS -L -o /tmp/geoserver-wps.zip \
-    http://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}/extensions/geoserver-${GEOSERVER_VERSION}-wps-plugin.zip \
+    https://downloads.sourceforge.net/project/geoserver/GeoServer/${GEOSERVER_VERSION}/extensions/geoserver-${GEOSERVER_VERSION}-wps-plugin.zip \
   && unzip -j /tmp/geoserver-wps.zip -d /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
   && rm -rf /tmp/geoserver-wps.zip
 
@@ -72,8 +72,6 @@ RUN set -x \
 # Install Hadoop and Accumulo specific jars
 RUN set -x \
     && /opt/geomesa/bin/install-hadoop-accumulo.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib -a ${ACCUMULO_VERSION} -h ${HADOOP_VERSION} -t ${THRIFT_VERSION}
-RUN set -x \
-    && rm /opt/tomcat/webapps/geoserver/WEB-INF/lib/guava-11.*.jar
 
 RUN set -x \
   && chown root /opt/tomcat/webapps/geoserver/WEB-INF/lib/* \
