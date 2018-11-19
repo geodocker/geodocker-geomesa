@@ -17,7 +17,7 @@ dockerfile:
 
 
 accumulo-${ACCUMULO_VERSION}-bin.tar.gz:
-	curl -L -C - -O "http://apache.mirrors.lucidnetworks.net/accumulo/${ACCUMULO_VERSION}/accumulo-${ACCUMULO_VERSION}-bin.tar.gz"
+	curl -L -C - -O "https://archive.apache.org/dist/accumulo/${ACCUMULO_VERSION}/accumulo-${ACCUMULO_VERSION}-bin.tar.gz"
 
 publish: build
 	docker push ${IMG}:${TAG}
