@@ -85,7 +85,7 @@ RUN pip install --upgrade --pre /tmp/toree-0.2.0.dev1.tar.gz
 
 # install Spark
 ENV APACHE_SPARK_VERSION 2.0.2
-ENV HADOOP_VERSION 2.7
+ENV HADOOP_VERSION 2.8.4
 
 RUN cd /tmp && \
         wget -q http://d3kbcqa49mib13.cloudfront.net/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz && \

@@ -22,4 +22,4 @@ RUN set -x \
   && curl -sS -LO -H 'Cookie: oraclelicense=accept-securebackup-cookie' "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_URL_HASH}/jdk-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.rpm" \
   && rpm -Uvh jdk-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.rpm \
   && rm -rf jdk-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.rpm \
-  && curl -sS http://archive.apache.org/dist/bigtop/bigtop-1.1.0/repos/centos7/bigtop.repo > /etc/yum.repos.d/bigtop.repo
+  && curl -sS http://www.apache.org/dist/bigtop/stable/repos/centos7/bigtop.repo > /etc/yum.repos.d/bigtop.repo

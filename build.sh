@@ -32,3 +32,4 @@ echo "TAG = ${TAG}"
 
 export ACCUMULO_VERSION GEOMESA_VERSION TAG THRIFT_VERSION
 make publish
+
