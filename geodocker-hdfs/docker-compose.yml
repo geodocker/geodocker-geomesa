@@ -1,7 +1,7 @@
 version: '2'
 services:
     hdfs-name:
-        image: quay.io/geomesa/hdfs:latest
+        image: quay.io/geomesa/hdfs:geomesa-2.1.0-accumulo-1.9.2
         command: name
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
@@ -10,7 +10,7 @@ services:
         # volumes:
         #   - '/data/gt/hdfs:/data/hdfs'
     hdfs-sname:
-        image: quay.io/geomesa/hdfs:latest
+        image: quay.io/geomesa/hdfs:geomesa-2.1.0-accumulo-1.9.2
         command: sname
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
@@ -21,7 +21,7 @@ services:
         # volumes:
         #   - '/data/gt/hdfs:/data/hdfs'
     hdfs-data:
-        image: quay.io/geomesa/hdfs:latest
+        image: quay.io/geomesa/hdfs:geomesa-2.1.0-accumulo-1.9.2
         command: data
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-instance.name=${INSTANCE_NAME:=accumulo}
-instance.zookeeper.host=localhost:2181
-# instance.rpc.ssl.enabled=false
+# instance.name=${INSTANCE_NAME:=accumulo}
+# instance.zookeeper.host=localhost
 
+# instance.rpc.ssl.enabled=false
 # instance.rcp.sasl.enabled=false
 # rpc.sasl.qop=auth

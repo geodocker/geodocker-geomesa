@@ -17,7 +17,10 @@ ARG GEOMESA_VERSION
 ARG ACCUMULO_VERSION
 ARG THRIFT_VERSION
 ARG KAFKA_VERSION
-ENV HADOOP_VERSION 2.7.3
+
+ENV ACCUMULO_VERSION ${ACCUMULO_VERSION}
+ENV THRIFT_VERSION ${THRIFT_VERSION}
+ENV HADOOP_VERSION 2.8.4
 ENV GEOSERVER_VERSION 2.12.0
 ENV TOMCAT_VERSION 8.5.23
 
@@ -29,7 +32,7 @@ RUN set -x \
 
 RUN set -x \
   && curl -sS -L -o /tmp/geoserver-war.zip \
-    http://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}/geoserver-${GEOSERVER_VERSION}-war.zip \
+    https://downloads.sourceforge.net/project/geoserver/GeoServer/${GEOSERVER_VERSION}/geoserver-${GEOSERVER_VERSION}-war.zip \
   && unzip /tmp/geoserver-war.zip geoserver.war -d /tmp \
   && unzip /tmp/geoserver.war -d /opt/tomcat/webapps/geoserver \
   && rm -rf /tmp/geoserver-war.zip /tmp/geoserver.war /opt/tomcat/webapps/geoserver/META-INF
@@ -37,7 +40,7 @@ RUN set -x \
 # Install geoserver WPS plugin
 RUN set -x \
   && curl -sS -L -o /tmp/geoserver-wps.zip \
-    http://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}/extensions/geoserver-${GEOSERVER_VERSION}-wps-plugin.zip \
+    https://downloads.sourceforge.net/project/geoserver/GeoServer/${GEOSERVER_VERSION}/extensions/geoserver-${GEOSERVER_VERSION}-wps-plugin.zip \
   && unzip -j /tmp/geoserver-wps.zip -d /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
   && rm -rf /tmp/geoserver-wps.zip
 
@@ -72,8 +75,6 @@ RUN set -x \
 # Install Hadoop and Accumulo specific jars
 RUN set -x \
     && /opt/geomesa/bin/install-hadoop-accumulo.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib -a ${ACCUMULO_VERSION} -h ${HADOOP_VERSION} -t ${THRIFT_VERSION}
-RUN set -x \
-    && rm /opt/tomcat/webapps/geoserver/WEB-INF/lib/guava-11.*.jar
 
 # Install Geomesa Kafka Distribution
 COPY --from=1 /geomesa-kafka* /opt/geomesa-kafka/

@@ -27,7 +27,7 @@ the file to point to local images or another repository.
 To connect to the Accumulo master instance, run:
 
 ```
-$ docker exec -ti geodockeraccumulogeomesa_accumulo-master_1 /usr/bin/bash
+$ docker exec -ti geodocker-accumulo-geomesa_accumulo-master_1 /usr/bin/bash
 ```
 
 To ingest some sample data, use the GeoMesa command line tools:
