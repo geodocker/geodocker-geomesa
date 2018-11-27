@@ -6,17 +6,14 @@ RUN curl -sSL \
 
 FROM centos:7
 ARG GEOMESA_VERSION
-ARG KAFKA_VERSION
 RUN curl -sSL \
-    https://repo.locationtech.org/content/repositories/geomesa-releases/org/locationtech/geomesa/geomesa-kafka-${KAFKA_VERSION}-dist_2.11/${GEOMESA_VERSION}/geomesa-kafka-${KAFKA_VERSION}-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz \
+    https://repo.locationtech.org/content/repositories/geomesa-releases/org/locationtech/geomesa/geomesa-kafka-dist_2.11/${GEOMESA_VERSION}/geomesa-kafka-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz \
   | tar -zx
-
 
 FROM quay.io/geomesa/base:__TAG__
 ARG GEOMESA_VERSION
 ARG ACCUMULO_VERSION
 ARG THRIFT_VERSION
-ARG KAFKA_VERSION
 
 ENV ACCUMULO_VERSION ${ACCUMULO_VERSION}
 ENV THRIFT_VERSION ${THRIFT_VERSION}
@@ -82,7 +79,7 @@ COPY --from=1 /geomesa-kafka* /opt/geomesa-kafka/
 # Install GeoMesa Kafka DataStore
 RUN set -x \
   && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-  && tar zxvf /opt/geomesa-kafka/dist/gs-plugins/geomesa-kafka-${KAFKA_VERSION}-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz \
+  && tar zxvf /opt/geomesa-kafka/dist/gs-plugins/geomesa-kafka-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz \
   && rm /opt/tomcat/webapps/geoserver/WEB-INF/lib/zookeeper*.jar \
   && /opt/geomesa-kafka/bin/install-kafka.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib
 
@@ -92,11 +89,9 @@ FROM quay.io/geomesa/base:__TAG__
 ARG GEOMESA_VERSION
 ARG ACCUMULO_VERSION
 ARG THRIFT_VERSION
-ARG KAFKA_VERSION
 
 ENV ACCUMULO_VERSION ${ACCUMULO_VERSION}
 ENV GEOMESA_VERSION ${GEOMESA_VERSION}
-ENV KAFKA_VERSION ${KAFKA_VERSION}
 ENV THRIFT_VERSION ${THRIFT_VERSION}
 ENV HADOOP_VERSION 2.8.4
 ENV GEOSERVER_VERSION 2.12.0
