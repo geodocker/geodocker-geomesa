@@ -1,14 +1,12 @@
 FROM centos:7
 ARG GEOMESA_VERSION
-RUN curl -sSL \
-    https://repo.locationtech.org/content/repositories/geomesa-releases/org/locationtech/geomesa/geomesa-accumulo-dist_2.11/${GEOMESA_VERSION}/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz \
-  | tar -zx
+COPY tarballs/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz accumulo-dist.tar.gz
+RUN tar -zxf accumulo-dist.tar.gz
 
 FROM centos:7
 ARG GEOMESA_VERSION
-RUN curl -sSL \
-    https://repo.locationtech.org/content/repositories/geomesa-releases/org/locationtech/geomesa/geomesa-kafka-dist_2.11/${GEOMESA_VERSION}/geomesa-kafka-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz \
-  | tar -zx
+COPY tarballs/geomesa-kafka-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz kafka-dist.tar.gz
+RUN tar -zxf kafka-dist.tar.gz
 
 FROM quay.io/geomesa/base:__TAG__
 ARG GEOMESA_VERSION
