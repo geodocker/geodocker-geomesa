@@ -1,13 +1,3 @@
-FROM centos:7
-ARG GEOMESA_VERSION
-COPY tarballs/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz accumulo-dist.tar.gz
-RUN tar -zxf accumulo-dist.tar.gz
-
-FROM centos:7
-ARG GEOMESA_VERSION
-COPY tarballs/geomesa-kafka-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz kafka-dist.tar.gz
-RUN tar -zxf kafka-dist.tar.gz
-
 FROM quay.io/geomesa/base:__TAG__
 ARG GEOMESA_VERSION
 ARG ACCUMULO_VERSION
@@ -40,46 +30,46 @@ RUN set -x \
   && rm -rf /tmp/geoserver-wps.zip
 
 # Install Geomesa Accumulo Distribution
-COPY --from=0 /geomesa-accumulo* /opt/geomesa/
+ADD tarballs/geomesa-accumulo-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz /opt/
   
 # Install GeoMesa Accumulo DataStore
 RUN set -x \
     && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-    && tar zxvf /opt/geomesa/dist/gs-plugins/geomesa-accumulo-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
+    && tar zxvf /opt/geomesa-accumulo_2.11-${GEOMESA_VERSION}/dist/gs-plugins/geomesa-accumulo-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
 
 # Install GeoMesa Accumulo BlobStore
 RUN set -x \
     && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-    && tar zxvf /opt/geomesa/dist/gs-plugins/geomesa-blobstore-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
+    && tar zxvf /opt/geomesa-accumulo_2.11-${GEOMESA_VERSION}/dist/gs-plugins/geomesa-blobstore-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
 
 # Install GeoMesa Stream Store
 RUN set -x \
     && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-    && tar zxvf /opt/geomesa/dist/gs-plugins/geomesa-stream-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
+    && tar zxvf /opt/geomesa-accumulo_2.11-${GEOMESA_VERSION}/dist/gs-plugins/geomesa-stream-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
 
 # Install GeoMesa GeoJson Support
 RUN set -x \
     && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-    && tar zxvf /opt/geomesa/dist/gs-plugins/geomesa-geojson-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
+    && tar zxvf /opt/geomesa-accumulo_2.11-${GEOMESA_VERSION}/dist/gs-plugins/geomesa-geojson-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz
 
 # Install GeoMesa Process Jar
 RUN set -x \
     && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-    && cp /opt/geomesa/dist/gs-plugins/geomesa-process-wps_2.11-${GEOMESA_VERSION}.jar .
+    && cp /opt/geomesa-accumulo_2.11-${GEOMESA_VERSION}/dist/gs-plugins/geomesa-process-wps_2.11-${GEOMESA_VERSION}.jar .
 
 # Install Hadoop and Accumulo specific jars
 RUN set -x \
-    && /opt/geomesa/bin/install-hadoop-accumulo.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib -a ${ACCUMULO_VERSION} -h ${HADOOP_VERSION} -t ${THRIFT_VERSION}
+    && /opt/geomesa-accumulo_2.11-${GEOMESA_VERSION}/bin/install-hadoop-accumulo.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib -a ${ACCUMULO_VERSION} -h ${HADOOP_VERSION} -t ${THRIFT_VERSION}
 
 # Install Geomesa Kafka Distribution
-COPY --from=1 /geomesa-kafka* /opt/geomesa-kafka/
+ADD tarballs/geomesa-kafka-dist_2.11-${GEOMESA_VERSION}-bin.tar.gz /opt/
 
 # Install GeoMesa Kafka DataStore
 RUN set -x \
   && cd /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
-  && tar zxvf /opt/geomesa-kafka/dist/gs-plugins/geomesa-kafka-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz \
+  && tar zxvf /opt/geomesa-kafka_2.11-${GEOMESA_VERSION}/dist/gs-plugins/geomesa-kafka-gs-plugin_2.11-${GEOMESA_VERSION}-install.tar.gz \
   && rm /opt/tomcat/webapps/geoserver/WEB-INF/lib/zookeeper*.jar \
-  && /opt/geomesa-kafka/bin/install-kafka.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib
+  && /opt/geomesa-kafka_2.11-${GEOMESA_VERSION}/bin/install-kafka.sh /opt/tomcat/webapps/geoserver/WEB-INF/lib
 
 
 FROM quay.io/geomesa/base:__TAG__
@@ -96,7 +86,7 @@ ENV GEOSERVER_VERSION 2.12.0
 ENV TOMCAT_VERSION 8.5.23
 ENV CATALINA_OPTS "-Xmx8g -XX:MaxPermSize=512M -Duser.timezone=UTC -server -Djava.awt.headless=true"
 
-COPY --from=2 /opt/tomcat /opt/tomcat/
+COPY --from=0 /opt/tomcat /opt/tomcat/
 RUN set -x \
   && groupadd tomcat \
   && useradd -M -s /bin/nologin -g tomcat -d /opt/tomcat tomcat \
