@@ -30,6 +30,6 @@ Name=Master,BidPrice=0.5,InstanceCount=1,InstanceGroupType=MASTER,InstanceType=m
 Name=Workers,BidPrice=0.5,InstanceCount=1,InstanceGroupType=CORE,InstanceType=m3.xlarge \
 --bootstrap-actions \
 Name=BootstrapGeoWave,Path=s3://geotrellis-test/geodocker/accumulo-0.2/bootstrap-geodocker-accumulo.sh,\
-Args=[-i=quay.io/geodocker/accumulo:geomesa-2.2.0-accumulo-1.9.2,-n=gis,-p=secret,\
+Args=[-i=quay.io/geodocker/accumulo:geomesa-2.2.1-accumulo-1.9.2,-n=gis,-p=secret,\
 -e=TSERVER_XMX=10G,-e=TSERVER_CACHE_DATA_SIZE=6G,-e=TSERVER_CACHE_INDEX_SIZE=2G]
 ```
