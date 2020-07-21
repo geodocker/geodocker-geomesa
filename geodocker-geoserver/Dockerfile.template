@@ -36,7 +36,7 @@ RUN set -x \
 RUN set -x \
   && curl -sS -L -o /tmp/geoserver-wps.zip \
     https://downloads.sourceforge.net/project/geoserver/GeoServer/${GEOSERVER_VERSION}/extensions/geoserver-${GEOSERVER_VERSION}-wps-plugin.zip \
-  && unzip -j /tmp/geoserver-wps.zip -d /opt/tomcat/webapps/geoserver/WEB-INF/lib/ \
+  && (echo 'A' | unzip -j /tmp/geoserver-wps.zip -d /opt/tomcat/webapps/geoserver/WEB-INF/lib/) \
   && rm -rf /tmp/geoserver-wps.zip
 
 # Install Geomesa Accumulo Distribution
